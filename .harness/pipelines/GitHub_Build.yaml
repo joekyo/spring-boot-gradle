@@ -1,0 +1,15 @@
+pipeline:
+  name: GitHub_Build
+  identifier: GitHub_Build
+  tags: {}
+  template:
+    templateRef: GitHub_Build_Template
+    versionLabel: v2
+    gitBranch: master
+    templateInputs:
+      properties:
+        ci:
+          codebase:
+            build: <+input>
+  projectIdentifier: DevOps
+  orgIdentifier: default
