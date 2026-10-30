@@ -1,0 +1,16 @@
+inputSet:
+  name: master_build
+  identifier: master_build
+  orgIdentifier: default
+  projectIdentifier: DevOps
+  pipeline:
+    identifier: GitHub_Build
+    template:
+      templateInputs:
+        properties:
+          ci:
+            codebase:
+              build:
+                type: branch
+                spec:
+                  branch: master
