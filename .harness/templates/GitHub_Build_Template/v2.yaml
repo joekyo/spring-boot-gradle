@@ -1,0 +1,54 @@
+template:
+  name: GitHub_Build_Template
+  type: Pipeline
+  projectIdentifier: DevOps
+  orgIdentifier: default
+  spec:
+    properties:
+      ci:
+        codebase:
+          connectorRef: GitHub
+          repoName: spring-boot-gradle
+          build: <+input>
+    stages:
+      - stage:
+          name: Maven_Build
+          identifier: Maven_Build
+          description: ""
+          type: CI
+          spec:
+            cloneCodebase: true
+            caching:
+              enabled: true
+              override: true
+            buildIntelligence:
+              enabled: true
+            platform:
+              os: Linux
+              arch: Amd64
+            runtime:
+              type: Cloud
+              spec: {}
+            execution:
+              steps:
+                - step:
+                    type: Run
+                    name: Gradle_Build
+                    identifier: Gradle_Build
+                    spec:
+                      connectorRef: account.harnessImage
+                      image: eclipse-temurin:17-jdk
+                      shell: Sh
+                      command: ./gradlew build
+                - step:
+                    type: S3Upload
+                    name: S3Upload_1
+                    identifier: S3Upload_1
+                    spec:
+                      connectorRef: AWS
+                      region: ap-northeast-3
+                      bucket: harness-artifact-uploadx2
+                      sourcePath: build/libs/demo-0.0.1-SNAPSHOT.jar
+                      target: releases/<+pipeline.sequenceId>/
+  identifier: GitHub_Build_Template
+  versionLabel: v2
